@@ -63,7 +63,7 @@ class Parameter
      */
     public function setDefaultValue($defaultValue)
     {
-        if (!is_scalar($defaultValue) && !is_array($defaultValue)) {
+        if (!is_scalar($defaultValue) && !is_array($defaultValue) && !is_null($defaultValue)) {
             throw new \InvalidArgumentException('Default PHP Values can be only scalars or arrays');
         }
 

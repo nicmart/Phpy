@@ -35,13 +35,14 @@ class PhpParameterRenderer implements ParameterRendererInterface
     }
 
     /**
+     * Render the value as a default value of a php function parameter
      * @param $value
      * @throws \InvalidArgumentException
      * @return mixed|string
      */
     public function renderDefaultValue($value)
     {
-        if (is_scalar($value)) {
+        if (is_scalar($value) || is_null($value)) {
             return var_export($value, true);
         } elseif (is_array($value)) {
             $pairs = array();
@@ -56,6 +57,7 @@ class PhpParameterRenderer implements ParameterRendererInterface
     }
 
     /**
+     * @param Parameter $parameter
      * @return array
      */
     private function getTmplValues(Parameter $parameter)
@@ -63,9 +65,9 @@ class PhpParameterRenderer implements ParameterRendererInterface
         return array(
             'typeHint' => $parameter->getTypeHint(),
             'passByRef' => $parameter->isByRef() ? '&' : '',
-            'pramName' => $parameter->getName(),
+            'paramName' => $parameter->getName(),
             'defValue' => $parameter->hasDefaultValue()
-                ? $this->renderDefaultValue($parameter->getDefaultValue()) : ''
+                ? ' = ' . $this->renderDefaultValue($parameter->getDefaultValue()) : ''
         );
     }
 }
