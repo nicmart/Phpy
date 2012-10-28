@@ -1,5 +1,5 @@
 <?php
-namespace Phpy;
+namespace Phpy\Parameter;
 /**
  * A function or method parameter representation
  */
