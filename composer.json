@@ -1,0 +1,24 @@
+{
+    "name": "nicmart/phpy",
+    "type": "library",
+    "description": "With phpy you have an object-oriented interface to create valid php-code constructs",
+    "keywords": ["php", "code", "reflection"],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Nicolò Martini",
+            "email": "electroportal.net@gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.3"
+
+    },
+    "autoload": {
+        "psr-0": {
+            "Phpy": "src/",
+            "Phpy\\Test": "tests"
+        }
+    }
+}
+
