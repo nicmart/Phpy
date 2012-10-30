@@ -43,6 +43,9 @@ class FuncTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($ns, $this->func->getNamespace());
     }
 
+    /**
+     * @covers Phpy\Func\Func::__construct
+     */
     public function testConstructorSetAutomaticallyTheNamespace()
     {
         $func = new Func('Hello\\World\\Function');

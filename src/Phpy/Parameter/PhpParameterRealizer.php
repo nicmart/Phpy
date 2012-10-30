@@ -4,7 +4,7 @@ namespace Phpy\Parameter;
 /**
  * Render a parameter to a php valid piece of code
  */
-class PhpParameterRenderer implements ParameterRendererInterface
+class PhpParameterRealizer implements ParameterRealizerInterface
 {
     private $template = '{typeHint} {passByRef}${paramName}{defValue}';
 

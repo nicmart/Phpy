@@ -1,7 +1,7 @@
 <?php
 namespace Phpy\Parameter;
 
-interface ParameterRendererInterface
+interface ParameterRealizerInterface
 {
     /**
      * Transform a parameter object into something else

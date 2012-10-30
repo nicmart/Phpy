@@ -2,12 +2,12 @@
 namespace Phpy\Test\Parameter;
 
 use Phpy\Parameter\Parameter;
-use Phpy\Parameter\ParameterRendererInterface;
-use Phpy\Parameter\PhpParameterRenderer;
+use Phpy\Parameter\ParameterRealizerInterface;
+use Phpy\Parameter\PhpParameterRealizer;
 
-class PhpParameterRendererTest extends \PHPUnit_Framework_TestCase
+class PhpParameterRealizerTest extends \PHPUnit_Framework_TestCase
 {
-    /** @var PhpParameterRenderer */
+    /** @var PhpParameterRealizer */
     protected $renderer;
 
     /** @var Parameter */
@@ -15,7 +15,7 @@ class PhpParameterRendererTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->renderer = new PhpParameterRenderer;
+        $this->renderer = new PhpParameterRealizer;
         $this->parameter = new Parameter('paramName');
     }
 
