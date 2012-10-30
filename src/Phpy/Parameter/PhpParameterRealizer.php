@@ -23,7 +23,7 @@ class PhpParameterRealizer implements ParameterRealizerInterface
      * @param Parameter $parameter
      * @return mixed|void
      */
-    public function render(Parameter $parameter)
+    public function realize(Parameter $parameter)
     {
         $string = $this->template;
 

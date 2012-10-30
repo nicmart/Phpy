@@ -9,5 +9,5 @@ interface ParameterRealizerInterface
      * @param Parameter $parameter
      * @return mixed
      */
-    public function render(Parameter $parameter);
+    public function realize(Parameter $parameter);
 }
