@@ -20,7 +20,7 @@ class TemplateRealizer
 {
     private $leftDelimiter;
     private $rightDelimiter;
-    private $template;
+    private $defaultTemplate;
     private $autoIndent = true;
 
     /**
@@ -30,7 +30,7 @@ class TemplateRealizer
      */
     public function __construct($template, $leftDelimiter = '{', $rightDelimiter = '}')
     {
-        $this->template = $template;
+        $this->defaultTemplate = $template;
         $this->leftDelimiter = $leftDelimiter;
         $this->rightDelimiter = $rightDelimiter;
     }
@@ -62,7 +62,7 @@ class TemplateRealizer
      */
     public function realizeVars(array $vars)
     {
-        $realizedString = $this->template;
+        $realizedString = $this->defaultTemplate;
         foreach ($vars as $key => $value) {
             $pattern = "/(^[\\s\\t]*?)?{$this->leftDelimiter}$key{$this->rightDelimiter}/m";
             $linePrefix = $this->isAutoIndent() ? '$1' : '';

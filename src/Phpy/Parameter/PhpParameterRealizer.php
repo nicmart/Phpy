@@ -1,20 +1,22 @@
 <?php
 namespace Phpy\Parameter;
 
+use Phpy\Realizer\TemplateRealizer;
+
 /**
  * Render a parameter to a php valid piece of code
  */
-class PhpParameterRealizer implements ParameterRealizerInterface
+class PhpParameterRealizer extends TemplateRealizer implements ParameterRealizerInterface
 {
-    private $template = '{typeHint} {passByRef}${paramName}{defValue}';
-
     /**
-     * @param null|string $template A template to
+     * @param null|string $template     The template to use in the realization
+     * @param string $leftDelimiter
+     * @param string $rightDelimiter
      */
-    public function __construct($template = null)
+    public function __construct($template = '{typeHint} {passByRef}${paramName}{defValue}',
+        $leftDelimiter = '{', $rightDelimiter = '}')
     {
-        if (isset($template))
-            $this->template = $template;
+        parent::__construct($template, $leftDelimiter, $rightDelimiter);
     }
 
 
@@ -25,13 +27,7 @@ class PhpParameterRealizer implements ParameterRealizerInterface
      */
     public function realize(Parameter $parameter)
     {
-        $string = $this->template;
-
-        foreach ($this->getTmplValues($parameter) as $type => $value) {
-            $string = str_replace('{' . $type . '}', $value, $string);
-        }
-
-        return trim($string);
+        return trim($this->realizeVars($this->getTmplVars($parameter)));
     }
 
     /**
@@ -60,7 +56,7 @@ class PhpParameterRealizer implements ParameterRealizerInterface
      * @param Parameter $parameter
      * @return array
      */
-    private function getTmplValues(Parameter $parameter)
+    private function getTmplVars(Parameter $parameter)
     {
         return array(
             'typeHint' => $parameter->getTypeHint(),
