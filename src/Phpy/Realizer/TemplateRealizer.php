@@ -62,11 +62,27 @@ class TemplateRealizer
      */
     public function realizeVars(array $vars)
     {
+        $realizedString = $this->template;
+        foreach ($vars as $key => $value) {
+            $pattern = "/(^[\\s\\t]*?)?{$this->leftDelimiter}$key{$this->rightDelimiter}/m";
+            $replace = '$1' . $this->addStringToBeginningOfLines($value, '$1');
 
+            $realizedString = preg_replace($pattern, $replace, $realizedString);
+        }
+
+        return $realizedString;
     }
 
+    /**
+     * Add $startString at the beginning of lines
+     *
+     * @param $original
+     * @param $startString
+     *
+     * @return string
+     */
     private function addStringToBeginningOfLines($original, $startString)
     {
-
+        return implode(PHP_EOL . $startString, explode(PHP_EOL, $original));
     }
 }

@@ -36,4 +36,40 @@ class TemplateRealizerTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertEquals('{var1}yyy', $this->realizer->realizeVars(array('var2' => 'yyy')));
     }
+
+    public function testRealizerPreserveIndentsIfValueIsMultilineAndOptionIsEnabled()
+    {
+        $tabindent = "\t\t";
+        $spaceIndent = "       ";
+
+        $template = implode(PHP_EOL, array(
+                'xxx',
+                $tabindent . '{tabindented}',
+                'yyy',
+                $spaceIndent . '{spaceindented}',
+                'kkk{spaceindented}'
+        ));
+        $vars = array(
+            'spaceindented' => 'spaceline1' . PHP_EOL . 'spaceline2' . "\n" . 'spaceline3',
+            'tabindented' => 'tabline1' . PHP_EOL . 'tabline2',
+        );
+
+        $expected = implode(PHP_EOL, array(
+                'xxx',
+                $tabindent . 'tabline1',
+                $tabindent . 'tabline2',
+                'yyy',
+                $spaceIndent . 'spaceline1',
+                $spaceIndent . 'spaceline2',
+                $spaceIndent . 'spaceline3',
+                'kkkspaceline1',
+                'spaceline2',
+                'spaceline3',
+        ));
+
+        $realizer = new TemplateRealizer($template);
+        $realizer->setAutoIndent(true);
+
+        $this->assertEquals($expected, $realizer->realizeVars($vars));
+    }
 }
