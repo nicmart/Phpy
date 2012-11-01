@@ -72,4 +72,15 @@ class TemplateRealizerTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals($expected, $realizer->realizeVars($vars));
     }
+
+    public function testRealizeWithouAutoindent()
+    {
+        $realizer = new TemplateRealizer('    {var}');
+        $realizer->setAutoIndent(false);
+
+        $value = "line1" . PHP_EOL . "line2";
+        $expected = '    line1' . PHP_EOL . 'line2';
+
+        $this->assertEquals($expected, $realizer->realizeVars(array('var' => $value)));
+    }
 }

@@ -65,7 +65,8 @@ class TemplateRealizer
         $realizedString = $this->template;
         foreach ($vars as $key => $value) {
             $pattern = "/(^[\\s\\t]*?)?{$this->leftDelimiter}$key{$this->rightDelimiter}/m";
-            $replace = '$1' . $this->addStringToBeginningOfLines($value, '$1');
+            $linePrefix = $this->isAutoIndent() ? '$1' : '';
+            $replace = '$1' . $this->addStringToBeginningOfLines($value, $linePrefix);
 
             $realizedString = preg_replace($pattern, $replace, $realizedString);
         }
