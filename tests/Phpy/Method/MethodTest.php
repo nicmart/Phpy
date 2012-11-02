@@ -78,4 +78,11 @@ class MethodTest extends \PHPUnit_Framework_TestCase
         $this->method->setAbstract(true);
 
     }
+
+    public function testAbstractCanBeSetToFalseIfFinalIsTrueAndViceVersa()
+    {
+        $this->method->setFinal(true)->setAbstract(false);
+
+        $this->method->setFinal(false)->setAbstract(true)->setFinal(false);
+    }
 }

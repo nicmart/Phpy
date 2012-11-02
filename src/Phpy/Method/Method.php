@@ -75,7 +75,7 @@ class Method extends Func
      */
     public function setAbstract($abstract)
     {
-        if ($this->isFinal())
+        if ($abstract && $this->isFinal())
             throw new \BadMethodCallException('Cannot set a final method as abstract');
 
         $this->abstract = $abstract;
@@ -102,7 +102,7 @@ class Method extends Func
      */
     public function setFinal($final)
     {
-        if ($this->isAbstract())
+        if ($final && $this->isAbstract())
             throw new \BadMethodCallException('Cannot set an abstract method as final');
 
         $this->final = $final;
