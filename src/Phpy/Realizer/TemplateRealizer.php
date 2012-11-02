@@ -57,12 +57,16 @@ class TemplateRealizer
      * Perform template realization
      *
      * @param array $vars
+     * @param null $template The template to realize. Null to use the default one
      *
      * @return string
      */
-    public function realizeVars(array $vars)
+    public function realizeVars(array $vars, $template = null)
     {
-        $realizedString = $this->defaultTemplate;
+        if (!isset($template))
+            $template = $this->defaultTemplate;
+
+        $realizedString = $template;
         foreach ($vars as $key => $value) {
             $pattern = "/(^[\\s\\t]*?)?{$this->leftDelimiter}$key{$this->rightDelimiter}/m";
             $linePrefix = $this->isAutoIndent() ? '$1' : '';

@@ -8,7 +8,8 @@ interface FuncRealizerInterface
 {
     /**
      * @param Func $function
+     * @param bool $includeBody
      * @return string
      */
-    public function realize(Func $function);
+    public function realize(Func $function, $includeBody = true);
 }

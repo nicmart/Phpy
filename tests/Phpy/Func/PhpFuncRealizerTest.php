@@ -50,13 +50,14 @@ class PhpFuncRealizerTest extends \PHPUnit_Framework_TestCase
             ->method('getParameters')
             ->will($this->returnValue(array(new Parameter('a'), new Parameter('b'), new Parameter('c'))))
         ;
+
         $this->funcMock
             ->expects($this->any())
             ->method('getBody')
             ->will($this->returnValue('bodyMock'))
         ;
 
-        $this->realizer = new PhpFuncRealizer($this->paramRealizerMock, 'function({parametersList}){{body}}');
+        $this->realizer = new PhpFuncRealizer($this->paramRealizerMock, 'function({parametersList}){realizedBody}', '{{body}}');
     }
 
     /**
@@ -66,5 +67,10 @@ class PhpFuncRealizerTest extends \PHPUnit_Framework_TestCase
     public function testRealize()
     {
         $this->assertEquals('function(xxx, xxx, xxx){bodyMock}', $this->realizer->realize($this->funcMock));
+    }
+
+    public function testRealizeWithBodyNotIncluded()
+    {
+        $this->assertEquals('function(xxx, xxx, xxx)', $this->realizer->realize($this->funcMock, false));
     }
 }

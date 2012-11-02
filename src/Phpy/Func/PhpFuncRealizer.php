@@ -15,42 +15,59 @@ class PhpFuncRealizer extends TemplateRealizer implements FuncRealizerInterface
      */
     private $parameterRealizer;
 
-    private $defaultTemplate = <<<TEMPLATE
-function({parametersList})
+    /**
+     * Determines if the body should be included in the realization
+     *
+     * @var bool
+     */
+    private $includeBody = true;
+
+    private $defaultTemplate = 'function({parametersList}){realizedBody}';
+
+    private $bodyTemplate = <<<TEMPLATE
+
 {
     {body}
 }
 TEMPLATE;
 
 
+
     /**
      * @param ParameterRealizerInterface $parameterRealizer
      * @param null|string $template
+     * @param null $bodyTemplate
      */
-    public function __construct(ParameterRealizerInterface $parameterRealizer, $template = null)
+    public function __construct(ParameterRealizerInterface $parameterRealizer, $template = null, $bodyTemplate = null)
     {
         $this->parameterRealizer = $parameterRealizer;
 
         if (!isset($template))
             $template = $this->defaultTemplate;
 
+        if (isset($bodyTemplate))
+            $this->bodyTemplate = $bodyTemplate;
+
         parent::__construct($template);
     }
 
     /**
      * @param Func $function
+     * @param bool $includeBody
      * @return string
      */
-    public function realize(Func $function)
+    public function realize(Func $function, $includeBody = true)
     {
-        return $this->realizeVars($this->getTmplVars($function));
+        return $this->realizeVars($this->getTmplVars($function, $includeBody));
     }
 
     /**
      * @param Func $function
+     * @param bool $includeBody
+     *
      * @return array
      */
-    private function getTmplVars(Func $function)
+    private function getTmplVars(Func $function, $includeBody)
     {
         $realizedParams = array();
 
@@ -60,7 +77,17 @@ TEMPLATE;
 
         return array(
             'parametersList' => implode(', ', $realizedParams),
-            'body' => $function->getBody(),
+            'realizedBody' => $includeBody ? $this->getRealizedBody($function) : '',
         );
+    }
+
+    /**
+     * Returns the function body enclosed by brackets
+     * @param Func $function
+     * @return string
+     */
+    private function getRealizedBody(Func $function)
+    {
+        return $this->realizeVars(array('body' => $function->getBody()), $this->bodyTemplate);
     }
 }
