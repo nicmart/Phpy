@@ -57,7 +57,7 @@ class PhpMethodRealizer extends TemplateRealizer implements MethodRealizerInterf
     {
         return array(
             'modifiers' => $this->getModifiersString($method),
-            'function' => $this->funcRealizer->realize($method)
+            'function' => $this->funcRealizer->realize($method, !$method->isAbstract())
         );
     }
 

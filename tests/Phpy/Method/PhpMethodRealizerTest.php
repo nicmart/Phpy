@@ -65,4 +65,30 @@ class PhpMethodRealizerTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals($expected, $this->methodRealizer->realize($this->method));
     }
+
+    public function testRealizeDoesNotRequestBodyIfMethodIsAbstract()
+    {
+        $this->method->setAbstract(true);
+
+        $this->funcRealizerMock
+            ->expects($this->any())
+            ->method('realize')
+            ->with($this->anything(), false)
+        ;
+
+        $this->methodRealizer->realize($this->method);
+    }
+
+    public function testRealizeRequestBodyIfMethodIsNotAbstract()
+    {
+        $this->method->setAbstract(false);
+
+        $this->funcRealizerMock
+            ->expects($this->any())
+            ->method('realize')
+            ->with($this->anything(), true)
+        ;
+
+        $this->methodRealizer->realize($this->method);
+    }
 }

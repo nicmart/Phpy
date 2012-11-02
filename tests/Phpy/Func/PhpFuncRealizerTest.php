@@ -62,7 +62,6 @@ class PhpFuncRealizerTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @covers Phpy\Func\PhpFuncRealizer::realize
-     * @todo   Implement testRealize().
      */
     public function testRealize()
     {
