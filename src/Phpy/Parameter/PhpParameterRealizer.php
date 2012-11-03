@@ -2,12 +2,17 @@
 namespace Phpy\Parameter;
 
 use Phpy\Realizer\TemplateRealizer;
+use Phpy\Realizer\ValueRealizerInterface;
+use Phpy\Realizer\PhpValueRealizer;
 
 /**
  * Render a parameter to a php valid piece of code
  */
 class PhpParameterRealizer extends TemplateRealizer implements ParameterRealizerInterface
 {
+    /** @var  ValueRealizerInterface */
+    private $valueRealizer;
+
     /**
      * @param null|string $template     The template to use in the realization
      * @param string $leftDelimiter
@@ -18,7 +23,6 @@ class PhpParameterRealizer extends TemplateRealizer implements ParameterRealizer
     {
         parent::__construct($template, $leftDelimiter, $rightDelimiter);
     }
-
 
     /**
      * Transform a Parameter object into a valid chunk of php code for a method or function parameter definition
@@ -31,25 +35,46 @@ class PhpParameterRealizer extends TemplateRealizer implements ParameterRealizer
     }
 
     /**
+     * Set ValueRealizer
+     *
+     * @param ValueRealizerInterface $valueRealizer
+     *
+     * @return PhpParameterRealizer The current instance
+     */
+    public function setValueRealizer(ValueRealizerInterface $valueRealizer)
+    {
+        $this->valueRealizer = $valueRealizer;
+        return $this;
+    }
+
+    /**
+     * Get ValueRealizer. If no one is set, create a PhpValueRealizer by default
+     *
+     * @return ValueRealizerInterface
+     */
+    public function getValueRealizer()
+    {
+        if (!isset($this->valueRealizer))
+            $this->setValueRealizer(new PhpValueRealizer);
+
+        return $this->valueRealizer;
+    }
+
+    /**
      * Render the value as a default value of a php function parameter
      * @param $value
      * @throws \InvalidArgumentException
      * @return mixed|string
      */
-    public function renderDefaultValue($value)
+    private function renderDefaultValue($value)
     {
-        if (is_scalar($value) || is_null($value)) {
-            return var_export($value, true);
-        } elseif (is_array($value)) {
-            $pairs = array();
-            foreach ($value as $key => $subvalue) {
-                $pairs[] = sprintf('%s => %s', var_export($key, true), $this->renderDefaultValue($subvalue));
-            }
-
-            return 'array(' . implode(', ', $pairs) . ')';
-        } else {
-            throw new \InvalidArgumentException('A default value can be only a scalar or an array');
+        try {
+            $realized = $this->getValueRealizer()->realizeValue($value);
+        } catch (\InvalidArgumentException $e) {
+            throw new \InvalidArgumentException('A default value can be only a scalar or an array of valid default values');
         }
+
+        return $realized;
     }
 
     /**

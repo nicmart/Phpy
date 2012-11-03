@@ -10,6 +10,8 @@
 namespace Phpy\Property;
 
 use Phpy\Realizer\TemplateRealizer;
+use Phpy\Realizer\ValueRealizerInterface;
+use Phpy\Realizer\PhpValueRealizer;
 
 /**
  * Class Description
@@ -19,6 +21,9 @@ use Phpy\Realizer\TemplateRealizer;
  */
 class PhpPropertyRealizer extends TemplateRealizer implements PropertyRealizerInterface
 {
+    /** @var ValueRealizerInterface */
+    private $valueRealizer;
+
     /**
      * @param string $template
      */
@@ -38,25 +43,46 @@ class PhpPropertyRealizer extends TemplateRealizer implements PropertyRealizerIn
     }
 
     /**
+     * Set ValueRealizer
+     *
+     * @param \Phpy\Realizer\ValueRealizerInterface $valueRealizer
+     *
+     * @return PhpPropertyRealizer The current instance
+     */
+    public function setValueRealizer(\Phpy\Realizer\ValueRealizerInterface $valueRealizer)
+    {
+        $this->valueRealizer = $valueRealizer;
+        return $this;
+    }
+
+    /**
+     * Get ValueRealizer
+     *
+     * @return \Phpy\Realizer\ValueRealizerInterface
+     */
+    public function getValueRealizer()
+    {
+        if (!isset($this->valueRealizer))
+            $this->setValueRealizer(new PhpValueRealizer);
+
+        return $this->valueRealizer;
+    }
+
+    /**
      * Render the value as a default value of a php function parameter
      * @param $value
      * @throws \InvalidArgumentException
      * @return mixed|string
      */
-    public function renderDefaultValue($value)
+    private function renderDefaultValue($value)
     {
-        if (is_scalar($value) || is_null($value)) {
-            return var_export($value, true);
-        } elseif (is_array($value)) {
-            $pairs = array();
-            foreach ($value as $key => $subvalue) {
-                $pairs[] = sprintf('%s => %s', var_export($key, true), $this->renderDefaultValue($subvalue));
-            }
-
-            return 'array(' . implode(', ', $pairs) . ')';
-        } else {
-            throw new \InvalidArgumentException('A default value can be only a scalar or an array');
+        try {
+            $realized = $this->getValueRealizer()->realizeValue($value);
+        } catch (\InvalidArgumentException $e) {
+            throw new \InvalidArgumentException('A default value can be only a scalar or an array of valid default values');
         }
+
+        return $realized;
     }
 
     /**

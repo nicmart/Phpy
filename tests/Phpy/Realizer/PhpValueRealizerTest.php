@@ -61,7 +61,7 @@ class PhpValueRealizerTest extends \PHPUnit_Framework_TestCase
     public function testRealizeArray()
     {
         $ary = array('a' => 'b', 'c' => 'd', 'e' => array('1' => 123, 2 => true, 'ciao' => 2.12));
-        
+
         //Note: string keys of php-array that are string representation of integers are automatically converted to
         //integers
         $expected = "array('a' => 'b', 'c' => 'd', 'e' => array(1 => 123, 2 => true, 'ciao' => 2.12))";

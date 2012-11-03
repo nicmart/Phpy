@@ -29,6 +29,16 @@ class PhpPropertyRealizerTest extends \PHPUnit_Framework_TestCase
     public function setUp()
     {
         $this->realizer = new PhpPropertyRealizer('{modifiers} ${propName}{defValue}');
+
+        $valueRealizerMock = $this->getMockBuilder('Phpy\Realizer\ValueRealizerInterface')->getMock();
+
+        $valueRealizerMock->expects($this->any())
+            ->method('realizeValue')
+            ->will($this->returnValue('mockedDefValue'))
+        ;
+
+        $this->realizer->setValueRealizer($valueRealizerMock);
+
         $this->property = new Property('prop');
     }
 
@@ -42,16 +52,7 @@ class PhpPropertyRealizerTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('private static $prop', $this->realizer->realize($this->property));
 
         $this->property->setDefaultValue('default');
-        $this->assertEquals('private static $prop = \'default\'', $this->realizer->realize($this->property),
+        $this->assertEquals('private static $prop = mockedDefValue', $this->realizer->realize($this->property),
             'Realization with sting default value');
-
-        $this->property->setDefaultValue(12.21);
-        $this->assertEquals('private static $prop = 12.21', $this->realizer->realize($this->property),
-            'Realization with float default value');
-
-        $this->property->setDefaultValue(array('c' => 'a', 'd' => 'f'));
-
-        $this->assertEquals("private static \$prop = array('c' => 'a', 'd' => 'f')", $this->realizer->realize($this->property),
-            'Realization with array default value');
     }
 }
