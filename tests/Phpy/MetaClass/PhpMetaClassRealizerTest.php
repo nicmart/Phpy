@@ -132,7 +132,7 @@ class PhpMetaClassRealizerTest extends \PHPUnit_Framework_TestCase
     {
         $this->metaClassRealizer->setDefaultTemplate('{methods}');
 
-        $expected = implode(';' . PHP_EOL . PHP_EOL, array_fill(0,3, '%realizedMethod%')) . ';';
+        $expected = implode( PHP_EOL . PHP_EOL, array_fill(0,3, '%realizedMethod%'));
 
         $this->assertEquals($expected, $this->metaClassRealizer->realize($this->metaClassMock));
     }

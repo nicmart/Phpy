@@ -136,7 +136,7 @@ TEMPLATE;
         $interfaces = $class->getInterfaces();
 
         return array(
-            'className' => 'ClassName',
+            'className' => $class->getName(),
             'extends' => $parent ? ' extends ' . $parent->getName() : '',
             'interfaces' => $interfaces ? ' implements ' . implode(', ', $interfaces) : '',
             'properties' => $this->realizeProperties($class),
@@ -175,6 +175,6 @@ TEMPLATE;
             $realizedMethods[] = $this->methodRealizer->realize($method);
         }
 
-        return $realizedMethods ? implode(';' . PHP_EOL .PHP_EOL, $realizedMethods) . ';' : '';
+        return $realizedMethods ? implode(PHP_EOL .PHP_EOL, $realizedMethods) : '';
     }
 }
