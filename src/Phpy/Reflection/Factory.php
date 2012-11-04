@@ -40,11 +40,17 @@ abstract class Factory
      * @param \ReflectionMethod $method
      * @return Method
      */
-    //abstract public function method(\ReflectionMethod $method);
+    abstract public function method(\ReflectionMethod $method);
+
+    /**
+     * @param \ReflectionProperty $prop
+     * @return Property
+     */
+    abstract public function property(\ReflectionProperty $prop);
 
     /**
      * @param \ReflectionClass $class
      * @return MetaClass
      */
-    //abstract public function metaClass(\ReflectionClass $class);
+    abstract public function metaClass(\ReflectionClass $class);
 }
