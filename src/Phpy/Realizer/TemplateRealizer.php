@@ -68,7 +68,7 @@ class TemplateRealizer
 
         $realizedString = $template;
         foreach ($vars as $key => $value) {
-            $pattern = "/(^[\\s\\t]*?)?{$this->leftDelimiter}$key{$this->rightDelimiter}/m";
+            $pattern = "/(^[ \\t]*)?{$this->leftDelimiter}$key{$this->rightDelimiter}/m";
             $linePrefix = $this->isAutoIndent() ? '$1' : '';
             $replace = '$1' . $this->addStringToBeginningOfLines($value, $linePrefix);
 
@@ -76,6 +76,24 @@ class TemplateRealizer
         }
 
         return $realizedString;
+    }
+
+    /**
+     * @param string $defaultTemplate
+     * @return TemplateRealizer The current instance
+     */
+    public function setDefaultTemplate($defaultTemplate)
+    {
+        $this->defaultTemplate = $defaultTemplate;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDefaultTemplate()
+    {
+        return $this->defaultTemplate;
     }
 
     /**

@@ -83,4 +83,13 @@ class TemplateRealizerTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals($expected, $realizer->realizeVars(array('var' => $value)));
     }
+
+    public function testRealizerDoesNotGetConfusedWithMultiLinesVarsAndTemplateNewLines()
+    {
+        $realizer = new TemplateRealizer(PHP_EOL . '{var}');
+        $value = "line1" . PHP_EOL . "line2";
+        $expected = PHP_EOL . $value;
+
+        $this->assertEquals($expected, $realizer->realizeVars(array('var' => $value)));
+    }
 }
