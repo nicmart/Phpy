@@ -8,7 +8,7 @@ use Phpy\Parameter\Parameter;
 class Func
 {
     /** @var array */
-    private $parameters;
+    private $parameters = array();
 
     /** @var string */
     private $name;

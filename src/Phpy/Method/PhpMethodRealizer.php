@@ -11,6 +11,7 @@ namespace Phpy\Method;
 
 use Phpy\Realizer\TemplateRealizer;
 use Phpy\Func\FuncRealizerInterface;
+use Phpy\Func\PhpFuncRealizer;
 
 /**
  * Realize a Method objecy into valid php-code
@@ -29,9 +30,12 @@ class PhpMethodRealizer extends TemplateRealizer implements MethodRealizerInterf
      * @param \Phpy\Func\FuncRealizerInterface $funcRealizer
      * @param string $template
      */
-    public function __construct(FuncRealizerInterface $funcRealizer, $template = "{modifiers} {function}")
+    public function __construct(FuncRealizerInterface $funcRealizer = null, $template = "{modifiers} {function}")
     {
         parent::__construct($template);
+
+        if (!isset($funcRealizer))
+            $funcRealizer = new PhpFuncRealizer;
 
         $this->funcRealizer = $funcRealizer;
     }

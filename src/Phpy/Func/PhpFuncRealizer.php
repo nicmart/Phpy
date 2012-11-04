@@ -2,6 +2,7 @@
 namespace Phpy\Func;
 
 use Phpy\Parameter\ParameterRealizerInterface;
+use Phpy\Parameter\PhpParameterRealizer;
 use Phpy\Realizer\TemplateRealizer;
 
 /**
@@ -22,7 +23,7 @@ class PhpFuncRealizer extends TemplateRealizer implements FuncRealizerInterface
      */
     private $includeBody = true;
 
-    private $defaultTemplate = 'function({parametersList}){realizedBody}';
+    private $defaultTemplate = 'function {name}({parametersList}){realizedBody}';
 
     private $bodyTemplate = <<<TEMPLATE
 
@@ -38,8 +39,12 @@ TEMPLATE;
      * @param null|string $template
      * @param null $bodyTemplate
      */
-    public function __construct(ParameterRealizerInterface $parameterRealizer, $template = null, $bodyTemplate = null)
+    public function __construct(ParameterRealizerInterface $parameterRealizer = null,
+        $template = null, $bodyTemplate = null)
     {
+        if (!isset($parameterRealizer))
+            $parameterRealizer = new PhpParameterRealizer;
+
         $this->parameterRealizer = $parameterRealizer;
 
         if (!isset($template))
@@ -78,6 +83,8 @@ TEMPLATE;
         return array(
             'parametersList' => implode(', ', $realizedParams),
             'realizedBody' => $includeBody ? $this->getRealizedBody($function) : '',
+            'name' => $function->getName(),
+            'fullName' => $function->getFullQualifiedName(),
         );
     }
 

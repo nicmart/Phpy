@@ -26,6 +26,8 @@ class PhpFuncRealizerTest extends \PHPUnit_Framework_TestCase
      */
     protected $funcMock;
 
+    public $returnedFuncBody = 'bodyMock';
+
     /**
      * Sets up the fixture, for example, opens a network connection.
      * This method is called before a test is executed.
@@ -50,11 +52,11 @@ class PhpFuncRealizerTest extends \PHPUnit_Framework_TestCase
             ->method('getParameters')
             ->will($this->returnValue(array(new Parameter('a'), new Parameter('b'), new Parameter('c'))))
         ;
-
+        $that = $this;
         $this->funcMock
             ->expects($this->any())
             ->method('getBody')
-            ->will($this->returnValue('bodyMock'))
+            ->will($this->returnCallback(function() use($that) { return $that->returnedFuncBody; }))
         ;
 
         $this->realizer = new PhpFuncRealizer($this->paramRealizerMock, 'function({parametersList}){realizedBody}', '{{body}}');
