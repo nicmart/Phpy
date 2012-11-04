@@ -31,6 +31,14 @@ class MetaClassTest extends \PHPUnit_Framework_TestCase
         $this->class = new MetaClass('MyClass');
     }
 
+    public function testConstructorAutomaticallySetNamespaces()
+    {
+        $className = 'A\\B\\MyClass';
+        $class = new MetaClass($className);
+
+        $this->assertEquals($class->getNamespace(), 'A\\B');
+    }
+
     public function testSetAndGetName()
     {
         $name = 'xyz';

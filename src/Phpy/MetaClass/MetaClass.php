@@ -64,7 +64,14 @@ class MetaClass
      */
     public function __construct($name, MetaClass $parent = null, $interfaces = array())
     {
-        $this->setName($name);
+        $pieces = explode('\\', $name);
+        $realName = array_pop($pieces);
+
+        $this->setName($realName);
+
+        if (count($pieces)) {
+            $this->setNamespace(implode('\\', $pieces));
+        }
 
         if (isset($parent))
             $this->setParent($parent);
