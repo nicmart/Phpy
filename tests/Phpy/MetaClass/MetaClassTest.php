@@ -53,6 +53,15 @@ class MetaClassTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($ns . '\\MyClass', $this->class->getFullQualifiedName());
     }
 
+    public function testAndSetAbstract()
+    {
+        $this->class->setAbstract(true);
+        $this->assertTrue($this->class->isAbstract());
+
+        $this->class->setAbstract(false);
+        $this->assertFalse($this->class->isAbstract());
+    }
+
     public function testInterfacesMethods()
     {
         $interfaces = array('interface1', 'interface2', 'interface3');

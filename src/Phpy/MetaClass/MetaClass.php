@@ -36,6 +36,11 @@ class MetaClass
     private $parent;
 
     /**
+     * @var bool
+     */
+    private $isAbstract;
+
+    /**
      * @var array
      */
     private $interfaces = array();
@@ -144,6 +149,30 @@ class MetaClass
     public function getParent()
     {
         return $this->parent;
+    }
+
+    /**
+     * Set Abstract
+     *
+     * @param boolean $abstract
+     *
+     * @return MetaClass The current instance
+     */
+    public function setAbstract($abstract)
+    {
+        $this->isAbstract = (bool) $abstract;
+
+        return $this;
+    }
+
+    /**
+     * Is the class Abstract?
+     *
+     * @return boolean
+     */
+    public function isAbstract()
+    {
+        return $this->isAbstract;
     }
 
     /**
